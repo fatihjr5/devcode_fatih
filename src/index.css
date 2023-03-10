@@ -1,0 +1,12 @@
+* {
+  font-family: Inter !important;
+  line-height: 1.5;
+  
+}
+.bg-primary {
+  background-color: #16ABF8 !important;
+}
+/* margins */
+.mt-10 {
+  margin-top: 10rem;
+}
