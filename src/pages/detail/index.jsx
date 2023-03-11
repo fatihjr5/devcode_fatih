@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 import Layout from '../../component/layout';
+import { CardLong } from '../../component/cards';
 
 function Details() {
   const [todo, setTodo] = useState([]);
-  const [activity, setActivity] = useState([]);
   
   const { id } = useParams();
   useEffect(() => {
@@ -17,12 +17,19 @@ function Details() {
         console.log(error);
     });
   }, [id]);
+
   return (
     <div>
       {
         todo ? (
           <Layout>
-            <h5>{todo.name}ddd</h5>
+            <div className="d-flex align-items-center justify-content-between mt-4">
+              <div className="d-flex align-items-center gap-2">
+                <Link to="/">Back</Link>
+                <h5 className='mb-0'>{todo.name}ddd</h5>
+              </div>
+            </div>
+            <CardLong/>
           </Layout>
         ) : ( 
           <div className='mt-5'>gada</div>

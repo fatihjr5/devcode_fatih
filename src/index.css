@@ -12,7 +12,14 @@
 }
 
 .rotate {
-  animation: rotates .5s;
+  animation: rotates .15s;
+}
+.del-btn{
+  float: right;
+  border: 0;
+  background: none;
+  margin-right: .75rem;
+  transform:translateY(-2.75rem);
 }
 @keyframes rotates {
   0% {

@@ -14,7 +14,8 @@ function App() {
         'https://todo.api.devcode.gethired.id/activity-groups',
         { 
           title: title,
-          activity_group_id: activity
+          activity_group_id: activity,
+          email: "shilla.ibra@gmail.com"
         },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -40,7 +41,7 @@ function App() {
     const fetchActivity = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get('https://todo.api.devcode.gethired.id/activity-groups');
+        const res = await axios.get('https://todo.api.devcode.gethired.id/activity-groups?email=shilla.ibra@gmail.com');
         setActivity(res.data.data)
         setIsLoading(false);
       } catch (error) {
@@ -48,18 +49,27 @@ function App() {
       }
     };
     fetchActivity();
-    setInterval(fetchActivity, 500);
+    setInterval(fetchActivity, 100);
   }, []);
 
   return (
     <Layout>
       <section className="mt-5 d-flex align-items-center justify-content-between">
         <h5 className="fs-5 fw-bold" data-cy="activity-title">Activity</h5>
-        <button className='btn btn-primary' onClick={()=>handleCreateTodo('Nambah baru nich', 1)} data-cy="activity-add-button">Tambah</button>
+        <button className='btn btn-primary' onClick={()=>handleCreateTodo('Tambah baru', 1)} data-cy="activity-add-button">Tambah</button>
       </section>
       <section className="mt-5">
         <div className="row">
-        {activity.length > 0 ? (
+        {activity === null || activity === 0 ? (
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-clockwise rotate mx-auto w-50 mt-4" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+          </svg>
+        ) : activity.length === 0 ? (
+          <button className='border-0 bg-transparent w-50 mx-auto mt-4' onClick={()=>handleCreateTodo('Tambah baru', 1)} data-cy="activity-empty-state">
+            <img className='w-50' src="/add.svg" alt="" />
+          </button>
+        ) : activity.length > 0 ? (
           activity.map((item) => {
             const createdAt = new Date(item.created_at);
             const createdAtDateOnly = createdAt.toLocaleDateString('id-ID');
@@ -69,16 +79,7 @@ function App() {
               </div>
             );
           })
-        ) : activity.length === null ? (
-          <p>None</p>
-        ) : (
-          <p>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-clockwise rotate" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-            </svg>
-          </p>
-        )}
+        ):null}
         </div>
       </section>
     </Layout>
