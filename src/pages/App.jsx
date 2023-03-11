@@ -5,9 +5,11 @@ import axios from 'axios'
 
 function App() {
   const [activity, setActivity] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   
   const handleCreateTodo = async (title, activity) => {
     try {
+      setIsLoading(true);
       await axios.post(
         'https://todo.api.devcode.gethired.id/activity-groups',
         { 
@@ -18,9 +20,7 @@ function App() {
       );
       setTitle('');
       setActivity('');
-      // Reload the todo list
-      const res = await axios.get('https://todo.api.devcode.gethired.id/activity-groups');
-      setTodo(res.data.data);
+      setIsLoading(false);
     } catch (error) {
       console.log(error.response);
     }
@@ -37,12 +37,18 @@ function App() {
   }
 
   useEffect(() => {
-    axios.get('https://todo.api.devcode.gethired.id/activity-groups')
-      .then(res => {
+    const fetchActivity = async () => {
+      setIsLoading(true);
+      try {
+        const res = await axios.get('https://todo.api.devcode.gethired.id/activity-groups');
         setActivity(res.data.data)
-      }).catch(error => {
+        setIsLoading(false);
+      } catch (error) {
         console.error(error);
-      });
+      }
+    };
+    fetchActivity();
+    setInterval(fetchActivity, 500);
   }, []);
 
   return (
@@ -53,16 +59,26 @@ function App() {
       </section>
       <section className="mt-5">
         <div className="row">
-          {
-            activity.map((item)=> {
+        {activity.length > 0 ? (
+          activity.map((item) => {
             const createdAt = new Date(item.created_at);
             const createdAtDateOnly = createdAt.toLocaleDateString('id-ID');
             return (
               <div className="col-md-2 col-lg-3 mb-4" key={item.id}>
-                <CardShort title={item.title} date={createdAtDateOnly} url={item.id} delete={()=>handleDelete(item.id)}/>
+                <CardShort title={item.title} date={createdAtDateOnly} url={item.id} delete={() => handleDelete(item.id)} />
               </div>
-            );})
-          }
+            );
+          })
+        ) : activity.length === null ? (
+          <p>None</p>
+        ) : (
+          <p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-clockwise rotate" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+            </svg>
+          </p>
+        )}
         </div>
       </section>
     </Layout>

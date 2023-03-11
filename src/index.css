@@ -10,3 +10,15 @@
 .mt-10 {
   margin-top: 10rem;
 }
+
+.rotate {
+  animation: rotates .5s;
+}
+@keyframes rotates {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
