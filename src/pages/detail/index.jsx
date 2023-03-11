@@ -3,38 +3,34 @@ import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 import Layout from '../../component/layout';
 import { CardLong } from '../../component/cards';
+import { AiOutlineLeft } from 'react-icons/ai'
 
 function Details() {
-  const [todo, setTodo] = useState([]);
-  
-  const { id } = useParams();
+  const { id } = useParams(); // get the ID from the URL
+  const [activity, setActivity] = useState({});
   useEffect(() => {
-    axios.get(`https://todo.api.devcode.gethired.id/todo-items?activity_group_id=${id}`)
+    // make GET request to API with ID as parameter
+    axios.get(`https://todo.api.devcode.gethired.id/activity-groups/${id}`)
       .then(response => {
-        setTodo(response.data);
+        setActivity(response.data);
       })
       .catch(error => {
         console.log(error);
-    });
+      });
   }, [id]);
-
   return (
     <div>
-      {
-        todo ? (
-          <Layout>
+      <Layout>
             <div className="d-flex align-items-center justify-content-between mt-4">
               <div className="d-flex align-items-center gap-2">
-                <Link to="/">Back</Link>
-                <h5 className='mb-0'>{todo.name}ddd</h5>
+                <Link to="/">
+                  <AiOutlineLeft />
+                </Link>
+                <h5 className='mb-0'>{activity.title}</h5>
               </div>
             </div>
             <CardLong/>
-          </Layout>
-        ) : ( 
-          <div className='mt-5'>gada</div>
-        )
-      }
+      </Layout>
     </div>
   )
 }
