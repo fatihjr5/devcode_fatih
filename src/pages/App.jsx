@@ -6,31 +6,11 @@ import { AiOutlineLoading3Quarters,AiOutlinePlus } from 'react-icons/ai'
 function App() {
   const [activity, setActivity] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  
-  const handleCreateTodo = async (title, activity) => {
-    try {
-      setIsLoading(true);
-      await axios.post(
-        'https://todo.api.devcode.gethired.id/activity-groups',
-        { 
-          title: title,
-          activity_group_id: activity,
-          email: "shilla.ibra@gmail.com"
-        },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-      setTitle('');
-      setActivity('');
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
 
   const handleDelete = (id) => {
     axios.delete(`https://todo.api.devcode.gethired.id/activity-groups/${id}`)
       .then(res => {
-        const updatedActivity = res.filter(item => item.id !== id);
+        const updatedActivity = activity.filter(item => item.id !== id);
         setActivity(updatedActivity);
       }).catch(error => {
         console.error(error);

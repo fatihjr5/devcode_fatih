@@ -5,8 +5,8 @@ export const CardShort = (props) => {
   return (
     <div className="card-wrapper">
       <Link to={`/detail/${props.url}`} className='text-decoration-none text-black' data-cy="activity_item">
-        <div class="card bg-white position-relative">
-          <div class="card-body">
+        <div className="card bg-white position-relative">
+          <div className="card-body">
             <h5 className="card-title" data-cy="activity-item-title">{props.title}</h5>
             <section className="mt-10">
               <div className="d-flex align-items-center justify-content-between">
