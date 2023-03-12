@@ -21,6 +21,23 @@
   margin-right: .75rem;
   transform:translateY(-2.75rem);
 }
+.border-b {
+  border: 0;
+  border-bottom: 1px solid black;
+}
+.border-b:focus {
+  outline: none;
+}
+.filter-btn {
+  border: 1px solid #c0c0c0;
+  padding: .75rem 1rem;
+  background: none;
+  border-radius: 100%;
+}
+.icons-set {
+  font-size: 1.25rem;
+  color: #16ABF8;
+}
 @keyframes rotates {
   0% {
     transform: rotate(0deg);

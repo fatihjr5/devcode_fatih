@@ -1,0 +1,7 @@
+<select class="form-select" aria-label="Default select example">
+                        {
+                          todo.map((item)=>(
+                            <option key={item.id} value={item.priority}>{item.priority}</option>
+                          ))
+                        }
+                      </select>

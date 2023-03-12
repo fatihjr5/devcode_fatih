@@ -1,4 +1,6 @@
 import React from 'react'
+import { AiOutlineEdit } from 'react-icons/ai'
+import { BsFillTrash3Fill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
 export const CardShort = (props) => {
@@ -21,12 +23,15 @@ export const CardShort = (props) => {
   )
 }
 
-export const CardLong = () => {
+export const CardLong = (props) => {
   return (
-    <div className='p-4 bg-white d-flex align-items-center justify-content-between shadow-lg mt-4'>
-      <h5>dd</h5>
-      <h5>dd</h5>
-      <h5>dd</h5>
+    <div className='p-4 bg-white d-flex align-items-center justify-content-between shadow-lg mt-4 rounded-4'>
+      <div className="d-flex align-items-center gap-2">
+        <input type="checkbox" name="" id="" />
+        <h5 className='mb-0'>{props.title}</h5>
+        <button className='border-0 bg-transparent' onClick={props.edit}><AiOutlineEdit/></button>
+      </div>
+      <button onClick={props.delete}><BsFillTrash3Fill /></button>
     </div>
   )
 }

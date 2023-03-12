@@ -7,6 +7,25 @@ function App() {
   const [activity, setActivity] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleCreateTodo = async (title, activity) => {
+    try {
+      setIsLoading(true);
+      await axios.post(
+        'https://todo.api.devcode.gethired.id/activity-groups',
+        { 
+          title: title,
+          activity_group_id: activity,
+          email: "shilla.ibra@gmail.com"
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      setActivity('');
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleDelete = (id) => {
     axios.delete(`https://todo.api.devcode.gethired.id/activity-groups/${id}`)
       .then(res => {
