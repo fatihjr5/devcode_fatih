@@ -100,6 +100,24 @@ function Details() {
       console.log(error.response);
     }
   };
+
+  const handleEditTodo = async () => {
+    try {
+      await axios.patch(
+        `https://todo.api.devcode.gethired.id/todo-items/${id}`,
+        { 
+          title: addTitle,
+          priority: addPriority,
+          activity_group_id: activity_group_id
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      setAddTitle('');
+      setAddPriority('very-high');
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   
   const handleDeleteTodo = (id) => {
     axios.delete(`https://todo.api.devcode.gethired.id/todo-items/${id}`)
@@ -173,23 +191,23 @@ function Details() {
                         <select name="priority" className="form-select" aria-label="Select priority" value={addPriority} onChange={handlePriorityChange}>
                           <option value="very-high" className='d-flex align-items-center gap-2'>
                             {addPriority === 'very-high' && <div className="p-2 bg-danger rounded-pills"></div>}
-                            <span>Very High</span>
+                            <p className='mb-0'>Very High</p>
                           </option>
                           <option value="high" className='d-flex align-items-center gap-2'>
                             {addPriority === 'high' && <div className="p-2 bg-danger rounded-pills"></div>}
-                            <span>High</span>
+                            <p className='mb-0'>High</p>
                           </option>
                           <option value="medium" className='d-flex align-items-center gap-2'>
                             {addPriority === 'medium' && <div className="p-2 bg-danger rounded-pills"></div>}
-                            <span>Medium</span>
+                            <p className='mb-0'>Medium</p>
                           </option>
                           <option value="low" className='d-flex align-items-center gap-2'>
                             {addPriority === 'low' && <div className="p-2 bg-danger rounded-pills"></div>}
-                            <span>Low</span>
+                            <p className='mb-0'>Low</p>
                           </option>
                           <option value="very-low" className='d-flex align-items-center gap-2'>
                             {addPriority === 'very-low' && <div className="p-2 bg-danger rounded-pills"></div>}
-                            <span>Very Low</span>
+                            <p className='mb-0'>Very Low</p>
                           </option>
                         </select>
                       </section>
@@ -212,40 +230,40 @@ function Details() {
           selectedFilter === 'latest' && todo
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .map((item) => (
-              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong edit={()=>handleEditTodo(item.id)} priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
           )}
         {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'oldest' && (
           todo
             .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
             .map((item) => (
-              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong edit={()=>handleEditTodo(item.id)} priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
         )}
         {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'az' && (
           todo
             .sort((a, b) => a.title.localeCompare(b.title))
             .map((item) => (
-              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong edit={()=>handleEditTodo(item.id)} priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
         )}
         {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'za' && (
           todo
             .sort((a, b) => b.title.localeCompare(a.title))
             .map((item) => (
-              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong edit={()=>handleEditTodo(item.id)} priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
         )}
         {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'unfinished' && (
           todo
             .filter((item) => !item.is_active)
             .map((item) => (
-              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong edit={()=>handleEditTodo(item.id)} priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
         )}
         {todo !== null && todo !== 0 && todo.length > 0 && !selectedFilter && (
           todo.map((item) => (
-            <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+            <CardLong edit={()=>handleEditTodo(item.id)} priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
           ))
         )}
       </Layout>
