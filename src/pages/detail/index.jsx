@@ -86,11 +86,13 @@ function Details() {
       .then(res => {
         const updatedTodo = todo.filter(item => item.id !== id);
         setTodo(updatedTodo);
+        setTimeout(() => {
+          window.location.reload();
+        }, 10);
       }).catch(error => {
         console.error(error);
       });
-  }
-  
+  } 
   
   useEffect(() => {
     getDataActivity()
@@ -160,40 +162,52 @@ function Details() {
           </div>
         </div>
         
-        {selectedFilter === 'latest' && todo
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .map((item) => (
+        {todo === null || todo === 0 ? (
+          <AiOutlineLoading3Quarters className="rotate"/>
+        ) : todo.length === 0 ? (
+          <button className='border-0 bg-transparent w-50 mx-auto mt-4' data-cy="activity-empty-state">
+            <img className='w-50' src="/add.svg" alt="" />
+          </button>
+        ) : (
+          selectedFilter === 'latest' && todo
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .map((item) => (
+              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+            ))
+          )}
+        {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'oldest' && (
+          todo
+            .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+            .map((item) => (
+              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+            ))
+        )}
+        {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'az' && (
+          todo
+            .sort((a, b) => a.title.localeCompare(b.title))
+            .map((item) => (
+              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+            ))
+        )}
+        {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'za' && (
+          todo
+            .sort((a, b) => b.title.localeCompare(a.title))
+            .map((item) => (
+              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+            ))
+        )}
+        {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'unfinished' && (
+          todo
+            .filter((item) => !item.is_active)
+            .map((item) => (
+              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+            ))
+        )}
+        {todo !== null && todo !== 0 && todo.length > 0 && !selectedFilter && (
+          todo.map((item) => (
             <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
-          ))}       
-
-        {selectedFilter === 'oldest' && todo
-          .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-          .map((item) => (
-            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
-          ))}       
-
-        {selectedFilter === 'az' && todo
-          .sort((a, b) => a.title.localeCompare(b.title))
-          .map((item) => (
-            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
-          ))}       
-
-        {selectedFilter === 'za' && todo
-          .sort((a, b) => b.title.localeCompare(a.title))
-          .map((item) => (
-            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
-          ))}       
-
-        {selectedFilter === 'unfinished' && todo
-          .filter((item) => !item.is_active)
-          .map((item) => (
-            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
-          ))}       
-
-        {!selectedFilter && todo.map((item) => (
-          <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
-        ))}
-
+          ))
+        )}
       </Layout>
     </div>
   )

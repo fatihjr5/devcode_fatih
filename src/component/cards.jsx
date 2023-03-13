@@ -32,7 +32,20 @@ export const CardLong = (props) => {
         <h5 className='mb-0'>{props.title}</h5>
         <button className='border-0 bg-transparent' onClick={props.edit}><AiOutlineEdit/></button>
       </div>
-      <button onClick={props.delete}><BsFillTrash3Fill /></button>
+      <button className='border-0 bg-transparent' data-bs-toggle="modal" data-bs-target="#exampleModal1"><BsFillTrash3Fill /></button>
+      <div class="modal" tabIndex="-1" id="exampleModal1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <p>Are you sure to delete this?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onClick={props.delete}>Hapus</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
