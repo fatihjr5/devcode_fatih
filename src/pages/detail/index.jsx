@@ -11,14 +11,15 @@ import { BsSortAlphaDownAlt } from 'react-icons/bs';
 function Details() {
   const { id } = useParams();
   const [activity, setActivity] = useState('');
-  const [title, setTitle] = useState([]);
-  const [priority, setPriority] = useState('');
-  const [todo, setTodo] = useState([]);
-  const [editMode, setEditMode] = useState(false);
+  const [addTitle, setAddTitle] = useState('');
+  const [addPriority, setAddPriority] = useState('very-high');
+  const [activity_group_id, setActivityGroupId] = useState('3');
   const [newTitle, setNewTitle] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('');
+  const [todo, setTodo] = useState([]);
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setIsLoading] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  
 
   // UPDATE TITLE SETTINGS
   const handleEdit = () => {
@@ -28,13 +29,6 @@ function Details() {
 
   const handleTitleChange = (newTitle) => {
     setNewTitle(newTitle);
-  };
-
-  const handleCreateTitle = (e) => {
-    setTitle(e.target.value);
-  };
-  const handleCreatePriority = (e) => {
-    setPriority(e.target.value);
   };
 
   const handleTitleBlur = () => {
@@ -79,6 +73,32 @@ function Details() {
       }).catch(error => {
         console.error('Error updating activity group:', error);
     });
+  };
+  // Create component
+  const handleNameChange = (event) => {
+    setAddTitle(event.target.value);
+  };
+  
+  const handlePriorityChange = (event) => {
+    setAddPriority(event.target.value);
+  };
+  
+  const handleSubmitTodo = async () => {
+    try {
+      await axios.post(
+        'https://todo.api.devcode.gethired.id/todo-items',
+        { 
+          title: addTitle,
+          priority: addPriority,
+          activity_group_id: activity_group_id
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      setAddTitle('');
+      setAddPriority('very-high');
+    } catch (error) {
+      console.log(error.response);
+    }
   };
   
   const handleDeleteTodo = (id) => {
@@ -133,32 +153,37 @@ function Details() {
           </div>
 
             <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Launch demo modal
+              Tambah
             </button>
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h1 className="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <h1 className="modal-title fs-5" id="exampleModalLabel">Tambah List Item</h1>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div className="modal-body">
-                  <form>
-                    <input type="text" value={title} onChange={handleCreateTitle} placeholder="New todo title"/>
-                    <select value={priority} onChange={handleCreatePriority}>
-                      <option value="">Select Priority</option>
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
-                      <option value="very-high">Very High</option>
-                    </select>
-                    <button type="submit">Create</button>
-                  </form>
+                    <form className='d-flex flex-column gap-3'onSubmit={handleSubmitTodo}>
+                      <section className="d-flex flex-column">
+                        <span className='fs-6 fw-semibold mb-1'>NAMA LIST ITEM</span>
+                        <input type="text" name="title" className="form-control" placeholder="Enter todo item" value={addTitle} onChange={handleNameChange}/>
+                      </section>
+                      <section className="d-flex flex-column">
+                        <span className='fs-6 fw-semibold mb-1'>PRIORITY</span>
+                        <select name="priority" className="form-select" aria-label="Select priority" value={addPriority} onChange={handlePriorityChange} required>
+                          <option value="very-high" className='d-flex align-items-center gap-2'>Very High</option>
+                          <option value="high" className='d-flex align-items-center gap-2'>High</option>
+                          <option value="medium" className='d-flex align-items-center gap-2'>Medium</option>
+                          <option value="low" className='d-flex align-items-center gap-2'>Low</option>
+                          <option value="very-low" className='d-flex align-items-center gap-2'>Very Low</option>
+                        </select>
+                      </section>
+                      <button className='btn btn-primary w-25 ms-auto mt-2' type="submit">Simpan</button>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
         
@@ -172,40 +197,40 @@ function Details() {
           selectedFilter === 'latest' && todo
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .map((item) => (
-              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
           )}
         {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'oldest' && (
           todo
             .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
             .map((item) => (
-              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
         )}
         {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'az' && (
           todo
             .sort((a, b) => a.title.localeCompare(b.title))
             .map((item) => (
-              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
         )}
         {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'za' && (
           todo
             .sort((a, b) => b.title.localeCompare(a.title))
             .map((item) => (
-              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
         )}
         {todo !== null && todo !== 0 && todo.length > 0 && selectedFilter === 'unfinished' && (
           todo
             .filter((item) => !item.is_active)
             .map((item) => (
-              <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+              <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
             ))
         )}
         {todo !== null && todo !== 0 && todo.length > 0 && !selectedFilter && (
           todo.map((item) => (
-            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
+            <CardLong priority={item.priority} delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
           ))
         )}
       </Layout>

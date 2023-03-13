@@ -18,7 +18,20 @@ export const CardShort = (props) => {
           </div>
         </div>
       </Link>
-      <button className='border-0 bg-transparent del-btn' data-cy="activity-item-delete-button" onClick={props.delete}>delete</button>
+      <button className='border-0 bg-transparent del-btn' data-bs-toggle="modal" data-bs-target="#exampleModal2" data-cy="activity-item-delete-button"><BsFillTrash3Fill /></button>
+      <div className="modal" tabIndex="-1" id="exampleModal2">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-body">
+              <p className='text-center fs-3'>Apakah anda yakin menghapus <br /> <span className='fw-bold'>{props.title}</span>?</p>
+            </div>
+            <div className="d-flex align-items-center justify-content-center gap-2 pb-4">
+              <button type="button" className="btn btn-secondary px-4 py-2 rounded-5" data-bs-dismiss="modal" data-cy="modal-delete-cancel-button">batal</button>
+              <button type="button" className="btn btn-danger px-4 py-2 rounded-5" onClick={props.delete} data-cy="modal-delete-confirm-button">Hapus</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -33,15 +46,15 @@ export const CardLong = (props) => {
         <button className='border-0 bg-transparent' onClick={props.edit}><AiOutlineEdit/></button>
       </div>
       <button className='border-0 bg-transparent' data-bs-toggle="modal" data-bs-target="#exampleModal1"><BsFillTrash3Fill /></button>
-      <div class="modal" tabIndex="-1" id="exampleModal1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
+      <div className="modal" tabIndex="-1" id="exampleModal1">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-body">
               <p>Are you sure to delete this?</p>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onClick={props.delete}>Hapus</button>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary" onClick={props.delete}>Hapus</button>
             </div>
           </div>
         </div>

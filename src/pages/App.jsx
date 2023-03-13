@@ -7,7 +7,7 @@ function App() {
   const [activity, setActivity] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchActivity = async () => {
+  const getActivity = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get('https://todo.api.devcode.gethired.id/activity-groups?email=shilla.ibra@gmail.com');
@@ -41,15 +41,18 @@ function App() {
       .then(res => {
         const updatedActivity = activity.filter(item => item.id !== id);
         setActivity(updatedActivity);
+        setTimeout(() => {
+          window.location.reload();
+        }, 10);
       }).catch(error => {
         console.error(error);
       });
-  }
+  } 
 
   useEffect(() => {
     
-    fetchActivity();
-    setInterval(fetchActivity, 100);
+    getActivity();
+    setInterval(getActivity, 100);
   }, []);
 
   return (
