@@ -28,6 +28,7 @@ export const CardLong = (props) => {
     <div className='p-4 bg-white d-flex align-items-center justify-content-between shadow-lg mt-4 rounded-4'>
       <div className="d-flex align-items-center gap-2">
         <input type="checkbox" name="" id="" />
+        <h5 className='mb-0'>{props.priority}</h5>
         <h5 className='mb-0'>{props.title}</h5>
         <button className='border-0 bg-transparent' onClick={props.edit}><AiOutlineEdit/></button>
       </div>

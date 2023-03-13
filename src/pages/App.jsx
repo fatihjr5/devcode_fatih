@@ -7,7 +7,18 @@ function App() {
   const [activity, setActivity] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleCreateTodo = async (title, activity) => {
+  const fetchActivity = async () => {
+    setIsLoading(true);
+    try {
+      const res = await axios.get('https://todo.api.devcode.gethired.id/activity-groups?email=shilla.ibra@gmail.com');
+      setActivity(res.data.data)
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCreateActivity = async (title, activity) => {
     try {
       setIsLoading(true);
       await axios.post(
@@ -19,7 +30,6 @@ function App() {
         },
         { headers: { 'Content-Type': 'application/json' } }
       );
-      setActivity('');
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -37,16 +47,7 @@ function App() {
   }
 
   useEffect(() => {
-    const fetchActivity = async () => {
-      setIsLoading(true);
-      try {
-        const res = await axios.get('https://todo.api.devcode.gethired.id/activity-groups?email=shilla.ibra@gmail.com');
-        setActivity(res.data.data)
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    
     fetchActivity();
     setInterval(fetchActivity, 100);
   }, []);
@@ -55,7 +56,7 @@ function App() {
     <Layout>
       <section className="mt-5 d-flex align-items-center justify-content-between">
         <h5 className="fs-5 fw-bold" data-cy="activity-title">Activity</h5>
-        <button className='btn btn-primary d-flex align-items-center gap-1' onClick={()=>handleCreateTodo('Tambah baru', 1)} data-cy="activity-add-button">
+        <button className='btn btn-primary d-flex align-items-center gap-1' onClick={()=>handleCreateActivity('Tambah baru', 1)} data-cy="activity-add-button">
           <AiOutlinePlus/>
           <span>tambah</span>
         </button>
@@ -65,7 +66,7 @@ function App() {
         {activity === null || activity === 0 ? (
           <AiOutlineLoading3Quarters className="rotate"/>
         ) : activity.length === 0 ? (
-          <button className='border-0 bg-transparent w-50 mx-auto mt-4' onClick={()=>handleCreateTodo('Tambah baru', 1)} data-cy="activity-empty-state">
+          <button className='border-0 bg-transparent w-50 mx-auto mt-4' onClick={()=>handleCreateActivity('Tambah baru', 1)} data-cy="activity-empty-state">
             <img className='w-50' src="/add.svg" alt="" />
           </button>
         ) : activity.length > 0 ? (
