@@ -12,7 +12,7 @@ function Details() {
   const { id } = useParams();
   const [activity, setActivity] = useState('');
   const [addTitle, setAddTitle] = useState('');
-  const [addPriority, setAddPriority] = useState('very-high');
+  const [addPriority, setAddPriority] = useState();
   const [activity_group_id, setActivityGroupId] = useState('3');
   const [newTitle, setNewTitle] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('');
@@ -170,12 +170,27 @@ function Details() {
                       </section>
                       <section className="d-flex flex-column">
                         <span className='fs-6 fw-semibold mb-1'>PRIORITY</span>
-                        <select name="priority" className="form-select" aria-label="Select priority" value={addPriority} onChange={handlePriorityChange} required>
-                          <option value="very-high" className='d-flex align-items-center gap-2'>Very High</option>
-                          <option value="high" className='d-flex align-items-center gap-2'>High</option>
-                          <option value="medium" className='d-flex align-items-center gap-2'>Medium</option>
-                          <option value="low" className='d-flex align-items-center gap-2'>Low</option>
-                          <option value="very-low" className='d-flex align-items-center gap-2'>Very Low</option>
+                        <select name="priority" className="form-select" aria-label="Select priority" value={addPriority} onChange={handlePriorityChange}>
+                          <option value="very-high" className='d-flex align-items-center gap-2'>
+                            {addPriority === 'very-high' && <div className="p-2 bg-danger rounded-pills"></div>}
+                            <span>Very High</span>
+                          </option>
+                          <option value="high" className='d-flex align-items-center gap-2'>
+                            {addPriority === 'high' && <div className="p-2 bg-danger rounded-pills"></div>}
+                            <span>High</span>
+                          </option>
+                          <option value="medium" className='d-flex align-items-center gap-2'>
+                            {addPriority === 'medium' && <div className="p-2 bg-danger rounded-pills"></div>}
+                            <span>Medium</span>
+                          </option>
+                          <option value="low" className='d-flex align-items-center gap-2'>
+                            {addPriority === 'low' && <div className="p-2 bg-danger rounded-pills"></div>}
+                            <span>Low</span>
+                          </option>
+                          <option value="very-low" className='d-flex align-items-center gap-2'>
+                            {addPriority === 'very-low' && <div className="p-2 bg-danger rounded-pills"></div>}
+                            <span>Very Low</span>
+                          </option>
                         </select>
                       </section>
                       <button className='btn btn-primary w-25 ms-auto mt-2' type="submit">Simpan</button>
