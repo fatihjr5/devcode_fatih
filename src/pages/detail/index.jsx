@@ -79,7 +79,17 @@ function Details() {
       }).catch(error => {
         console.error('Error updating activity group:', error);
     });
-  }; 
+  };
+  
+  const handleDeleteTodo = (id) => {
+    axios.delete(`https://todo.api.devcode.gethired.id/todo-items/${id}`)
+      .then(res => {
+        const updatedTodo = todo.filter(item => item.id !== id);
+        setTodo(updatedTodo);
+      }).catch(error => {
+        console.error(error);
+      });
+  }
   
   
   useEffect(() => {
@@ -123,7 +133,7 @@ function Details() {
             <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
               Launch demo modal
             </button>
-            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog">
                 <div className="modal-content">
                   <div className="modal-header">
@@ -153,35 +163,35 @@ function Details() {
         {selectedFilter === 'latest' && todo
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           .map((item) => (
-            <CardLong key={item.id} title={item.title} />
+            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
           ))}       
 
         {selectedFilter === 'oldest' && todo
           .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
           .map((item) => (
-            <CardLong key={item.id} title={item.title} />
+            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
           ))}       
 
         {selectedFilter === 'az' && todo
           .sort((a, b) => a.title.localeCompare(b.title))
           .map((item) => (
-            <CardLong key={item.id} title={item.title} />
+            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
           ))}       
 
         {selectedFilter === 'za' && todo
           .sort((a, b) => b.title.localeCompare(a.title))
           .map((item) => (
-            <CardLong key={item.id} title={item.title} />
+            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
           ))}       
 
         {selectedFilter === 'unfinished' && todo
           .filter((item) => !item.is_active)
           .map((item) => (
-            <CardLong key={item.id} title={item.title} />
+            <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
           ))}       
 
         {!selectedFilter && todo.map((item) => (
-          <CardLong key={item.id} title={item.title} />
+          <CardLong delete={()=>handleDeleteTodo(item.id)} key={item.id} title={item.title} />
         ))}
 
       </Layout>
